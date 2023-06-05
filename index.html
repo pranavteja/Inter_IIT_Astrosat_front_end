@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>NaXTara</title>
+		<link rel="icon" href="images/icon.png" type="image/png" sizes="16x16">
+		<script type="text/javascript" src="js/dat.gui.js"></script>
+		<link rel="stylesheet" href="style.css" />
+		<link
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<style>
+			body {
+				margin: 0;
+			}
+			canvas {
+				width: 100%;
+				height: 100%;
+			}
+			#overlay {
+				position: fixed;
+				display: none;
+				width: 99%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: rgba(0, 0, 0, 0.8);
+				z-index: 2222;
+				cursor: pointer;
+				font-family:  "Roboto Mono", monospace;
+				/* background-image: url(./images/night1.jpg); */
+			}
+			#text {
+				
+				font-size: 40px;
+				color: white;
+				margin-top: 10%;
+				text-align: center;
+				
+			}
+			#text h3{
+				font-style: italic;
+				color: rgb(196, 196, 196);
+				padding: 3%;
+				font-size: 2rem;
+			}
+			#instruct{
+	
+				top: 70%;
+				left: 30%;
+				font-size: 18px;
+				color:grey;
+				margin: auto;
+				width: max-content;
+
+				
+			}
+			#instruct:hover{
+				color: #5dadb8;
+			}
+			
+			#gui_container {
+				position: absolute;
+				top: 0%;
+				left: 0%;
+				
+			}
+			#gui {
+
+				font-family:  "Roboto Mono", monospace;
+			}
+		</style>
+	</head>
+
+	<body onload="on()">
+		<div class="container-fluid" style="margin: 0">
+			<div class="row">
+				<!-- FIRST COLUMN -->
+				<div class="preloader"></div>
+					
+				<div id="overlay" onclick="off()">
+					<div id="text" >
+						<h1>Welcome to NaXTara</h1>
+						
+						<h3>A visualization tool for AstroSat data</h3>
+					</div>
+					
+				
+					<div id="instruct" style="margin-top:25px">
+						<h2>Instructions:</h2>
+						<ul >
+							<li>Use left click to select a star</li>
+							<!-- <li>Use Scroll to navigate in the space</li> -->
+							
+							<li>Click on a star to zoom into it and get details on the right</li>
+							<li>Double click in open space  to zoom out</li>
+							<li>Navigate and pan through the space on the map</li>
+							<li><span style="color: rgb(248, 248, 144);">Yellow</span> stars are observed by the AstroSat</li>
+							<li><span style="color: rgb(71, 163, 224);">Blue</span> stars are not observed by the AstroSat</li>
+							<br>						
+
+						</ul>
+						<center><h5>Click anywhere to continue...</h5></center>
+					</div>
+					<!-- <div id="text1"></div> -->
+					
+				</div>
+				<div id="tooltip"></div>
+				<div class="search-box"> 
+					<input class="search-txt" id="myInput" type="text" name="" placeholder="Enter star name to search...">
+					<a class="search-btn" >
+						<i class="icon fa fa-search" onclick="search()" ></i>
+					</a>
+				</div>
+				<div
+					class="col-sm-10"
+					id="canvas"
+					style="padding: 0"
+				></div>
+
+				<!-- SECOND COLUMN -->
+				
+				<div
+					class="col-sm-2"
+					id="box"
+					style="padding: 0px;"
+				>
+				<!-- <div id="info"><p>Click on the star to get the data</p></div> -->
+					<div id="details">
+						<!--          <button onclick="on()">Turn on overlay effect</button>-->
+						<h2 id="neon" data-text="[Star_Result]">[Star Result]</h2>
+						<br>
+						<p id="seen"><span id="det"></span></p>
+						<br>
+						<!-- <p>
+							"Name of the Source"<br /><span id="source"></span>
+						</p> -->
+						<div id="observe">
+						<p >Observation date:<br /><span id="obsday"></span></p><br>
+						<p >Observation Time:<br /><span id="obstm"></span></p><br>
+						<p >Observation ID:<br /><span id="obsid"></span></p><br>
+						<p >Target ID:<br /><span id="trgtid"></span></p><br>
+						<p >Proposal ID:<br /><span id="propid"></span></p><br>
+					</div>
+					<p>Right Ascension:<span id="hms"></span></p>
+
+						<p>Declination:<span id="dec"></span></p>
+						<br>
+						<p>
+							Galactical latitude:<br /><span id="lat"></span>
+						</p>
+						<br />
+						<p>
+							Galactical longitude:<br /><span id="long"></span>
+						</p>
+						<br />
+
+						<p>V_Magnitude:<span id="intense"></span></p>
+						<br>
+					
+						
+						
+
+						<p >Publications:
+
+						<ul id="old_paper" ></ul>
+						<ul id="new_paper"></ul>
+						
+
+						<!-- <p>ASCII_link <a id="astro"> </a></p> -->
+						<a class="btn" id ="btn" href="" target="_blank">
+							ASCII File</a>
+							
+						
+						<br />
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<div id="gui_container"></div>
+
+		<script>
+			function on() {
+				document.getElementById('overlay').style.display = 'block';
+			}
+
+			function off() {
+				document.getElementById('overlay').style.display = 'none';
+			}
+		</script>
+		<script src="js/three.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js" integrity="sha512-lIKG1kC5TMb1Zx32vdz1n31YJMZRknVY20U9MJ28hD3y2c0OKN0Ce5NhJji78v8zX5UOSsm+MTBOcJt7yMBnSg==" crossorigin="anonymous"></script>
+		<script src="https://unpkg.com/topojson-client@3"></script>
+		<script src="https://unpkg.com/d3-array@1"></script>
+		<script src="https://unpkg.com/d3-collection@1"></script>
+		<script src="https://unpkg.com/d3-dispatch@1"></script>
+		<script src="https://unpkg.com/d3-request@1"></script>
+		<script src="https://unpkg.com/d3-timer@1"></script>
+		<script src="js/scriptcurrent.js"></script>
+		<script>
+			function ReadMore(){
+				var dots = document.getElementById("dots");
+				var moreText = document.getElementById("more");
+				var btnText = document.getElementById("read-btn");
+				
+				if (dots.style.display === "none") {
+					dots.style.display = "inline";
+					btnText.innerHTML = " Read more..."; 
+					moreText.style.display = "none";
+				} else {
+					dots.style.display = "none";
+					btnText.innerHTML = "...  Read less"; 
+					moreText.style.display = "inline";
+				}
+				
+			}
+			$(window).load(function() {
+			$('.preloader').fadeOut('slow');
+			});
+		
+		</script>
+	</body>
+</html>
