@@ -1,5 +1,7 @@
 # InterIIT-AstrosatVisualization-frontend
-
+The repository here contains the scripts developed for the front-end of a web visualization tool. The web visualization tool was a 3D environment showcasing data of the AstroSAT satellite (by ISRO), and this data is research about individual stars identified by the satellite. The data is accessible when we hover on a star out of all the stars which we have represented in a 3D environment similar to stellarium.
+## **Sample of the Visualization Tool**
+![unnamed](https://github.com/pranavteja/Inter_IIT_Astrosat_front_end/assets/45447693/c1f00998-ad81-478d-b4a6-010389314a0f)
 ## Folder Structure
 ```
 Images folder
@@ -9,6 +11,7 @@ JS folder
 index.html
 - The  base of all the files, which runs the tool.
 ```
+
 
 ## Frameworks used
 
